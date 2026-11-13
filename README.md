@@ -27,8 +27,9 @@ West Virginia Humanities Council's Squarespace site (https://veterans.wvhumaniti
 
 Facets come from each post's **Bio details** block (the first paragraph of `Label: value` lines:
 `Years`, `Branch`, `Conflict`, `Cemetery`, ...), not from Squarespace categories. Only published posts
-are indexed. Posts are discovered through `sitemap.xml` because the collection feed's pagination skips
-posts that share a publish date.
+are indexed. Candidate posts come from the collection feed, `sitemap.xml`, the current index and
+`data/seed-slugs.txt` (the feed's date-based pagination skips posts that share a publish date); drafts
+return 404 to anonymous requests and are skipped until published.
 
 After adding or editing a bio, either wait for the nightly run or start **Actions → Build directory
 index → Run workflow** on GitHub.

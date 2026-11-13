@@ -8,8 +8,9 @@ Outputs (in dist/):
 Facets come from each post's "Bio details" block (the first paragraph of "Label: value" lines),
 not from Squarespace categories (the WordPress import keeps only one category per post).
 
-The collection's ?format=json list paginates by publish date and skips posts that share a date,
-so posts are found through sitemap.xml and fetched one by one.
+The collection's ?format=json list paginates by publish date and skips posts that share a date, and
+sitemap.xml can lag, so candidate posts come from the feed, the sitemap, the current index and
+data/seed-slugs.txt; each is fetched on its own and kept only if it is published.
 
 Usage:
   build_index.py --site https://veterans.wvhumanities.org --collection biography-directory
@@ -50,23 +51,60 @@ def get(url, tries=3):
             time.sleep(2 * (n + 1))
 
 
-def post_urls(site, collection):
-    xml = get(f"{site}/sitemap.xml")
+def sitemap_slugs(site, collection):
+    try:
+        xml = get(f"{site}/sitemap.xml")
+    except RuntimeError:
+        return set()
     prefix = f"{site}/{collection}/"
-    urls = sorted({u for u in re.findall(r"<loc>([^<]+)</loc>", xml) if u.startswith(prefix)})
-    return [u for u in urls if u.count("/") == prefix.count("/")]  # posts only, not category pages
+    return {u[len(prefix):].strip("/") for u in re.findall(r"<loc>([^<]+)</loc>", xml)
+            if u.startswith(prefix) and "/" not in u[len(prefix):].strip("/")}
 
 
-def fetch_items(site, collection):
-    urls = post_urls(site, collection)
-    if not urls:
-        raise RuntimeError("No posts found in sitemap.xml; is the collection page enabled and public?")
+def feed_slugs(site, collection, max_pages=30):
+    """Newest posts from the collection feed. Its date-based pagination skips posts that share a
+    publish date (the bulk import), so this mainly finds bios added later in the editor."""
+    found, url = set(), f"{site}/{collection}?format=json"
+    for _ in range(max_pages):
+        j = json.loads(get(url))
+        found |= {i["urlId"] for i in j.get("items", [])}
+        nxt = (j.get("pagination") or {}).get("nextPageUrl")
+        if not nxt:
+            break
+        url = site + nxt + ("&" if "?" in nxt else "?") + "format=json"
+    return found
 
-    def one(u):
-        return json.loads(get(u + "?format=json"))["item"]
+
+def known_slugs(out_dir):
+    slugs = set()
+    try:
+        with open(os.path.join(out_dir, "directory-index.json"), encoding="utf-8") as f:
+            slugs |= {b["s"] for b in json.load(f)["bios"]}
+    except (OSError, ValueError, KeyError):
+        pass
+    seed = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "seed-slugs.txt")
+    if os.path.exists(seed):
+        slugs |= {l.strip() for l in open(seed, encoding="utf-8") if l.strip()}
+    return slugs
+
+
+def fetch_items(site, collection, out_dir):
+    """Candidates = feed + sitemap + already-indexed + seed list. Drafts and deleted posts return 404
+    to anonymous requests and are skipped, so publishing a draft adds it on the next run."""
+    slugs = feed_slugs(site, collection) | sitemap_slugs(site, collection) | known_slugs(out_dir)
+
+    def one(slug):
+        try:
+            item = json.loads(get(f"{site}/{collection}/{slug}?format=json", tries=2)).get("item")
+        except RuntimeError:
+            return None
+        return item if item and item.get("urlId") == slug else None
 
     with ThreadPoolExecutor(max_workers=6) as ex:
-        return list(ex.map(one, urls))
+        items = [i for i in ex.map(one, sorted(slugs)) if i]
+    if not items:
+        raise RuntimeError("No published posts found; is the collection page enabled and public?")
+    return items
 
 
 def items_from_wxr(path):
@@ -201,7 +239,7 @@ def main():
     ap.add_argument("--from-wxr")
     ap.add_argument("--out", default="dist")
     a = ap.parse_args()
-    items = items_from_wxr(a.from_wxr) if a.from_wxr else fetch_items(a.site.rstrip("/"), a.collection)
+    items = items_from_wxr(a.from_wxr) if a.from_wxr else fetch_items(a.site.rstrip("/"), a.collection, a.out)
     meta, search = build(items)
     if len(meta) < 10:
         sys.exit(f"Only {len(meta)} bios found; refusing to overwrite the index.")

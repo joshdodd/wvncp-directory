@@ -127,15 +127,21 @@ class Text(HTMLParser):
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.parts, self._a_text, self._in_a = [], [], False
+        self.parts, self._a_text, self._in_a, self._skip = [], [], False, 0
 
     def handle_starttag(self, tag, attrs):
+        if tag in ("style", "script", "noscript", "template"):
+            self._skip += 1
+            return
         if tag in ("br", "p", "li", "h1", "h2", "h3", "h4", "div"):
             self.parts.append("\n")
         if tag == "a":
             self._in_a, self._a_text = True, []
 
     def handle_endtag(self, tag):
+        if tag in ("style", "script", "noscript", "template"):
+            self._skip = max(0, self._skip - 1)
+            return
         if tag == "a":
             t = "".join(self._a_text)
             if not re.fullmatch(r"\s*Photo( \(beside text\))?\s*", t):
@@ -145,6 +151,8 @@ class Text(HTMLParser):
             self.parts.append("\n")
 
     def handle_data(self, data):
+        if self._skip:
+            return
         (self._a_text if self._in_a else self.parts).append(data)
 
     def text(self):

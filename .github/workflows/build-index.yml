@@ -1,0 +1,37 @@
+name: Build directory index
+
+# Rebuilds dist/directory-index.json and dist/search-index.json from the live site.
+# Runs nightly, and on demand from the Actions tab ("Run workflow") after adding or editing a bio.
+on:
+  schedule:
+    - cron: "17 7 * * *"   # 07:17 UTC (2:17 or 3:17 am Eastern)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-index
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build index
+        run: python scripts/build_index.py --site https://veterans.wvhumanities.org --collection biography-directory --out dist
+      - name: Commit and purge CDN cache
+        run: |
+          git add dist/directory-index.json dist/search-index.json
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update directory index"
+          git push
+          for f in directory-index.json search-index.json; do
+            curl -fsS "https://purge.jsdelivr.net/gh/joshdodd/wvncp-directory@main/dist/$f" > /dev/null || echo "purge failed for $f"
+          done

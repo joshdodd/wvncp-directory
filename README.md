@@ -7,7 +7,7 @@ West Virginia Humanities Council's Squarespace site (https://veterans.wvhumaniti
 
 | Path | What it is |
 |---|---|
-| `dist/directory.js`, `dist/directory.css` | The directory (vanilla JS, no dependencies). Served by jsDelivr from version tags. |
+| `dist/directory.js`, `dist/directory.css` | The directory (vanilla JS, no dependencies). The site loads them from the `release` branch via jsDelivr. |
 | `dist/directory-index.json` | One row per published bio: name, years, Branch, Conflict, Cemetery, sort key. |
 | `dist/search-index.json` | Each bio's unique words, for full-text search (loaded on first search). |
 | `scripts/build_index.py` | Builds both index files from the live site (standard library only). |
@@ -16,12 +16,13 @@ West Virginia Humanities Council's Squarespace site (https://veterans.wvhumaniti
 ## Embed (Squarespace Code Block on the Biography Directory page)
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/joshdodd/wvncp-directory@1/dist/directory.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/joshdodd/wvncp-directory@release/dist/directory.min.css">
 <div id="wvncp-directory" data-collection="/biography-directory"></div>
-<script src="https://cdn.jsdelivr.net/gh/joshdodd/wvncp-directory@1/dist/directory.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/joshdodd/wvncp-directory@release/dist/directory.min.js" defer></script>
 ```
 
-`@1` follows the latest 1.x release tag. The index files are read from `@main`.
+To publish a new version of the script or styles, merge into `release`; the *Purge CDN cache* workflow
+clears jsDelivr so the site updates within minutes. The index files are read from `@main`.
 
 ## How the data works
 

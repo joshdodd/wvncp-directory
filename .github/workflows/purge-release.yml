@@ -1,0 +1,19 @@
+name: Purge CDN cache for a release
+
+# The live site loads the script and styles from the "release" branch through jsDelivr
+# (…/wvncp-directory@release/dist/…). Pushing to that branch publishes a new version;
+# this clears jsDelivr's cache so the site picks it up within minutes.
+on:
+  push:
+    branches: [release]
+  workflow_dispatch:
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge jsDelivr
+        run: |
+          for f in directory.js directory.min.js directory.css directory.min.css; do
+            curl -fsS "https://purge.jsdelivr.net/gh/joshdodd/wvncp-directory@release/dist/$f" > /dev/null || echo "purge failed for $f"
+          done

@@ -1,0 +1,133 @@
+/*! WVNCP bio page styles  https://github.com/joshdodd/wvncp-directory */
+/* Everything is scoped to html.wvncp-bio-on, which bio.js adds after it has rebuilt the page,
+   so a post without the script still reads normally. */
+.wvncp-bio-on {
+  --wb-blue: #1d449a; --wb-green: #78aa42; --wb-cream: #f8f5f2; --wb-ink: #1a1a1a;
+  --wb-muted: #5c5853; --wb-border: #d9d3cc;
+  --wb-head: "Bebas Neue", Impact, sans-serif; --wb-body: "Yrsa", Georgia, serif; --wb-meta: "Newsreader", Georgia, serif;
+}
+/* Hide Squarespace's post date, prev/next and comments on bio posts */
+.wvncp-bio-on [data-sqsp-section="blog-item"] .blog-item-top-wrapper,
+.wvncp-bio-on [data-sqsp-section="blog-item"] .item-pagination,
+.wvncp-bio-on [data-sqsp-section="blog-item"] .blog-item-comments { display: none !important; }
+
+.wvncp-bio-on [data-sqsp-section="blog-item"] .blog-item-inner-wrapper { max-width: 880px; margin-left: auto; margin-right: auto; }
+
+/* top bar */
+.wb-topbar {
+  display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center;
+  background: var(--wb-cream); padding: 14px 20px; margin: 0 0 56px; font-family: var(--wb-meta); font-size: 15px;
+}
+.wb-topbar a, .wb-back { color: var(--wb-blue) !important; text-decoration: underline; font-family: var(--wb-meta); }
+.wb-back--bottom { display: block; text-align: center; margin: 40px 0 0; font-family: var(--wb-body); font-weight: 600; font-size: 19px; }
+
+/* header */
+.wb-header { text-align: center; margin: 0 auto 40px; }
+.wb-eyebrow { margin: 0 0 8px !important; font-family: var(--wb-meta); font-style: italic; font-size: 15px; color: var(--wb-muted); }
+.wvncp-bio-on .wb-header h1.wb-name, .wb-header h1 {
+  margin: 0 0 12px !important; font-family: var(--wb-head) !important; font-weight: 400 !important; font-size: clamp(48px, 7vw, 88px) !important;
+  line-height: .95 !important; letter-spacing: .03em; color: #000 !important; text-transform: none;
+}
+.wb-sub { margin: 0 !important; font-family: var(--wb-head); font-size: clamp(22px, 3vw, 32px); line-height: 1.1; letter-spacing: .03em; color: #000; }
+.wb-rule { width: min(560px, 60%); height: 2px; background: var(--wb-green); margin: 18px auto; }
+.wb-credits p { margin: 0 !important; font-family: var(--wb-meta); font-size: 15px; line-height: 1.5; color: var(--wb-ink); }
+.wb-credits strong { font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; }
+
+/* service record */
+.wb-record {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 24px; margin: 0 0 48px; padding: 22px 28px;
+  background: var(--wb-cream);
+}
+.wb-record-item { min-width: 0; }
+.wb-record dt { margin: 0 0 6px; font-family: var(--wb-meta); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--wb-green); }
+.wb-record dd { margin: 0; font-family: var(--wb-body); font-size: 17px; line-height: 1.4; color: var(--wb-ink); }
+.wb-record a { color: var(--wb-blue) !important; text-decoration: underline; }
+
+/* body text column */
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > p,
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > ul,
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > ol,
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > h2,
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > h3,
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > blockquote {
+  max-width: 680px; margin-left: auto; margin-right: auto;
+}
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > p {
+  font-family: var(--wb-body); font-size: 22px; line-height: 1.55; color: var(--wb-ink);
+}
+.wb-details-source[hidden] { display: none !important; }
+
+/* figures from Photo links */
+.wb-fig { margin: 48px auto; max-width: 880px; padding: 0 12px 12px 0; }
+.wb-fig-frame { position: relative; }
+.wb-fig-frame::before { content: ""; position: absolute; inset: 12px -12px -12px 12px; background: var(--wb-green); z-index: 0; }
+.wb-fig-link { position: relative; z-index: 1; display: block; }
+.wb-fig img { display: block; width: 100%; height: auto; background: var(--wb-cream); }
+.wb-cap { position: relative; z-index: 2; font-family: var(--wb-body); font-size: 19px; line-height: 1.45; color: #fff; background: var(--wb-green); }
+.wb-cap em, .wb-cap i { font-style: italic; }
+.wb-cap a { color: #fff !important; text-decoration: underline; }
+.wb-fig--lead .wb-cap { width: min(560px, 100%); padding: 18px 24px; margin-top: 0; }
+.wb-fig--band { padding-top: 0; }
+.wb-fig--band .wb-cap { text-align: center; padding: 10px 20px; margin-right: 0; }
+.wb-fig--band .wb-fig-frame::before { top: 12px; }
+.wb-fig--inset { float: right; width: 260px; max-width: 45%; margin: 6px 0 24px 36px; }
+.wb-fig--inset .wb-cap { font-size: 16px; text-align: center; padding: 8px 12px; }
+.wvncp-bio-on [data-sqsp-text-block-content]::after { content: ""; display: table; clear: both; }
+
+/* editor-added Image Blocks in new bios (Custom Code Specification hooks) */
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image-container] { position: relative; }
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image] { position: relative; z-index: 1; }
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image-container]::before {
+  content: ""; position: absolute; inset: 12px -12px -12px 12px; background: var(--wb-green); z-index: 0;
+}
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-caption-container] {
+  position: relative; z-index: 2; background: var(--wb-green); color: #fff; padding: 14px 20px; margin-top: 0;
+}
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-caption-container] * { color: #fff !important; }
+
+/* sources */
+.wvncp-bio-on .wb-sources-title {
+  border-top: 2px solid #000; padding-top: 24px; margin-top: 56px !important;
+  font-family: var(--wb-head) !important; font-weight: 400 !important; font-size: 48px !important; letter-spacing: .03em; line-height: 1;
+}
+.wvncp-bio-on .wb-sources { padding-left: 0 !important; list-style: none !important; }
+.wvncp-bio-on .wb-sources li { margin: 0 0 12px; padding-left: 24px; text-indent: -24px; font-family: var(--wb-body); font-size: 17px; line-height: 1.45; }
+.wvncp-bio-on .wb-sources li::before, .wvncp-bio-on .wb-sources li::marker { content: none; }
+.wvncp-bio-on .wb-sources li p { margin: 0; font-size: 17px; }
+
+/* related + PDF */
+.wb-bottom { max-width: 680px; margin: 48px auto 24px; }
+.wb-related { background: var(--wb-cream); padding: 24px 28px; }
+.wb-label { margin: 0 0 12px !important; font-family: var(--wb-meta); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #000; }
+.wb-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none !important; margin: 0 0 16px !important; padding: 0 !important; }
+.wb-tags li { margin: 0 !important; padding: 0 !important; }
+.wb-tags li::before, .wb-tags li::marker { content: none; }
+.wb-tags a {
+  display: inline-block; padding: 6px 14px; border: 1.5px solid var(--wb-blue); border-radius: 999px; background: #fff;
+  color: var(--wb-blue) !important; font-family: var(--wb-meta); font-size: 15px; text-decoration: none !important;
+}
+.wb-tags a:hover, .wb-tags a:focus { background: var(--wb-blue); color: #fff !important; }
+.wb-btn {
+  display: inline-block; padding: 12px 24px; border-radius: 6.4px; background: var(--wb-green); color: #fff !important;
+  font-family: var(--wb-meta); font-size: 16px; letter-spacing: .04em; text-transform: uppercase; text-decoration: none !important;
+}
+.wb-topbar a:focus-visible, .wb-back:focus-visible, .wb-tags a:focus-visible, .wb-btn:focus-visible, .wb-record a:focus-visible, .wb-fig-link:focus-visible {
+  outline: 3px solid var(--wb-green); outline-offset: 2px;
+}
+
+/* tablet / mobile */
+@media (max-width: 900px) {
+  .wb-record { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .wb-topbar { margin-bottom: 32px; padding: 12px 16px; }
+  .wb-topbar .wb-pdf-link { display: none; }
+  .wb-record { grid-template-columns: 1fr; padding: 20px; }
+  .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > p { font-size: 19px; }
+  .wb-fig { padding: 0 8px 8px 0; margin: 32px auto; }
+  .wb-fig-frame::before, .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image-container]::before { inset: 8px -8px -8px 8px; }
+  .wb-fig--inset { float: none; width: 100%; max-width: 320px; margin: 32px auto; }
+  .wb-fig--lead .wb-cap { width: 100%; padding: 14px 16px; }
+  .wvncp-bio-on .wb-sources-title { font-size: 40px !important; }
+  .wb-related { padding: 20px; }
+}

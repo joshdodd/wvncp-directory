@@ -83,10 +83,11 @@
 .wvncp-bio-on [data-sqsp-text-block-content]::after { content: ""; display: table; clear: both; }
 
 /* editor-added Image Blocks in new bios (Custom Code Specification hooks) */
-.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image-container] { position: relative; }
-.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image] { position: relative; z-index: 1; }
-.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image-container]::before {
-  content: ""; position: absolute; inset: 12px -12px -12px 12px; background: var(--wb-green); z-index: 0;
+/* Green offset frame for uploaded photos, matching .wb-fig-frame::before on imported photos.
+   Squarespace sets overflow: hidden on the image container and its wrapper, which clips a ::before layer,
+   so the frame is a box-shadow on the wrapper instead (its parent figure doesn't clip). */
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-layout] :has(> [data-sqsp-image-classic-block-image-container]) {
+  box-shadow: 12px 12px 0 var(--wb-green);
 }
 .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-caption-container] {
   position: relative; z-index: 2; background: var(--wb-green); color: #fff; padding: 14px 20px; margin-top: 0;
@@ -145,7 +146,8 @@
   .wb-record { grid-template-columns: 1fr; padding: 20px; }
   .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-text-block-content] > p { font-size: 19px; }
   .wb-fig { padding: 0 8px 8px 0; margin: 32px auto; }
-  .wb-fig-frame::before, .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image-container]::before { inset: 8px -8px -8px 8px; }
+  .wb-fig-frame::before { inset: 8px -8px -8px 8px; }
+  .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-layout] :has(> [data-sqsp-image-classic-block-image-container]) { box-shadow: 8px 8px 0 var(--wb-green); }
   .wb-fig--inset { float: none; width: 100%; max-width: 320px; margin: 32px auto; }
   .wb-pair-row { gap: 18px; }
   .wvncp-bio-on [data-sqsp-section="blog-item"] .sqs-block-image.float-right,

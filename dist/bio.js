@@ -182,6 +182,17 @@
           p.parentNode.replaceChild(photoFigure(p, a, figIndex++), p);
         }
       });
+      // two photos in a row with the same caption (e.g. "left ... right") -> one side-by-side pair
+      Array.prototype.forEach.call(tb.querySelectorAll("figure.wb-fig"), function (f) {
+        var g = f.nextElementSibling;
+        if (!f.parentNode || !g || !g.classList.contains("wb-fig") || g.classList.contains("wb-fig--pair")) return;
+        var c1 = f.querySelector(".wb-cap"), c2 = g.querySelector(".wb-cap");
+        if (!c1 || !c2 || c1.textContent.trim() !== c2.textContent.trim()) return;
+        var row = el("div", { class: "wb-pair-row" }, [f.querySelector(".wb-fig-frame"), g.querySelector(".wb-fig-frame")]);
+        var pair = el("figure", { class: "wb-fig wb-fig--pair" }, [row, c1]);
+        f.parentNode.replaceChild(pair, f);
+        g.parentNode.removeChild(g);
+      });
       Array.prototype.forEach.call(tb.querySelectorAll("h1,h2,h3,h4"), function (h) {
         if (/^\s*Sources\s*$/i.test(h.textContent)) {
           h.classList.add("wb-sources-title");

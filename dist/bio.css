@@ -76,6 +76,10 @@
 /* two portraits in a row stack down the right side instead of squeezing the text */
 .wb-fig--inset + .wb-fig--inset { clear: right; }
 .wb-fig--inset .wb-cap { font-size: 16px; text-align: center; padding: 8px 12px; }
+/* two photos sharing one caption sit side by side with the caption under both */
+.wb-fig--pair { max-width: 680px; clear: both; }
+.wb-pair-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: end; margin-bottom: 12px; }
+.wb-fig--pair .wb-cap { text-align: center; padding: 12px 20px; margin-top: 12px; font-size: 17px; }
 .wvncp-bio-on [data-sqsp-text-block-content]::after { content: ""; display: table; clear: both; }
 
 /* editor-added Image Blocks in new bios (Custom Code Specification hooks) */
@@ -131,6 +135,7 @@
   .wb-fig { padding: 0 8px 8px 0; margin: 32px auto; }
   .wb-fig-frame::before, .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-image-container]::before { inset: 8px -8px -8px 8px; }
   .wb-fig--inset { float: none; width: 100%; max-width: 320px; margin: 32px auto; }
+  .wb-pair-row { gap: 18px; }
   .wb-fig--lead .wb-cap { width: 100%; padding: 14px 16px; }
   .wvncp-bio-on .wb-sources-title { font-size: 40px !important; }
   .wb-related { padding: 20px; }

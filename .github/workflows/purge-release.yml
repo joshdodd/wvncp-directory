@@ -12,8 +12,23 @@ jobs:
   purge:
     runs-on: ubuntu-latest
     steps:
-      - name: Purge jsDelivr
+      - name: Purge jsDelivr and confirm every file serves
         run: |
-          for f in directory.js directory.min.js directory.css directory.min.css; do
+          files="directory.js directory.min.js directory.css directory.min.css bio.js bio.min.js bio.css bio.min.css"
+          base="https://cdn.jsdelivr.net/gh/joshdodd/wvncp-directory@release/dist"
+          for f in $files; do
             curl -fsS "https://purge.jsdelivr.net/gh/joshdodd/wvncp-directory@release/dist/$f" > /dev/null || echo "purge failed for $f"
           done
+          # jsDelivr can briefly cache a 404 for a minified file right after a purge: check, and purge again if needed
+          for attempt in 1 2 3 4 5; do
+            sleep 20
+            bad=""
+            for f in $files; do
+              code=$(curl -s -o /dev/null -w "%{http_code}" "$base/$f")
+              [ "$code" = "200" ] || bad="$bad $f"
+            done
+            [ -z "$bad" ] && { echo "All files serve 200"; exit 0; }
+            echo "Attempt $attempt, not serving:$bad"
+            for f in $bad; do curl -fsS "https://purge.jsdelivr.net/gh/joshdodd/wvncp-directory@release/dist/$f" > /dev/null || true; done
+          done
+          echo "Some files still fail:$bad"; exit 1

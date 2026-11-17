@@ -56,9 +56,27 @@
     }
     return d;
   }
+  function startsWithKey(p) {
+    var t = (p && p.textContent || "").trim();
+    var i = t.indexOf(":");
+    return i > 0 && DETAIL_KEYS.indexOf(t.slice(0, i).trim()) >= 0;
+  }
   function isDetails(p) {
     var t = (p.textContent || "").trim();
-    return /^(Years|Branch|Conflict|Cemetery):/.test(t) && /\n|Branch:|Conflict:/.test(p.innerHTML.replace(/<br\s*\/?>/gi, "\n"));
+    if (!/^(Years|Branch|Conflict|Cemetery):/.test(t)) return false;
+    var multiLine = /\n|Branch:|Conflict:/.test(p.innerHTML.replace(/<br\s*\/?>/gi, "\n"));
+    return multiLine || startsWithKey(p.nextElementSibling);
+  }
+  // editors may press Enter (new paragraph) instead of Shift+Enter between lines: fold those into one
+  function absorbDetails(p) {
+    var n = p.nextElementSibling;
+    while (n && n.tagName === "P" && startsWithKey(n)) {
+      var next = n.nextElementSibling;
+      p.appendChild(document.createElement("br"));
+      while (n.firstChild) p.appendChild(n.firstChild);
+      n.parentNode.removeChild(n);
+      n = next;
+    }
   }
 
   // ---------- helpers for links back to the directory ----------
@@ -125,6 +143,7 @@
     }
     if (!detailsP) return; // not a bio post
     sec.setAttribute("data-wb-done", "1");
+    absorbDetails(detailsP);
     var d = readDetails(detailsP);
     var h1 = sec.querySelector("h1");
     var name = h1 ? h1.textContent.trim() : document.title;

@@ -165,18 +165,27 @@ def to_text(body):
     return p.text()
 
 
+DETAIL_KEYS = ("Years", "Branch", "Conflict", "Cemetery", "Rank", "Written by", "School", "Instructed by",
+               "Section", "Site", "Grave", "Interment date", "PDF")
+
+
 def details(body):
-    """Read 'Label: value' lines from the first paragraph that starts with 'Years:' (or any facet label)."""
+    """Read 'Label: value' lines from the Bio details: the first paragraph that starts with a facet label,
+    plus any following paragraphs that also start with a known label (editors may press Enter, not Shift+Enter)."""
+    d, started = {}, False
     for para in re.findall(r"<p[^>]*>(.*?)</p>", body or "", re.S):
         lines = [l.strip() for l in to_text(para).split("\n") if l.strip()]
-        if lines and re.match(r"(Years|Branch|Conflict|Cemetery):", lines[0]):
-            d = {}
-            for l in lines:
-                k, sep, v = l.partition(":")
-                if sep and k.strip():
-                    d[k.strip()] = v.strip()
-            return d
-    return {}
+        if not started:
+            if not (lines and re.match(r"(Years|Branch|Conflict|Cemetery):", lines[0])):
+                continue
+            started = True
+        elif not (lines and lines[0].partition(":")[0].strip() in DETAIL_KEYS and ":" in lines[0]):
+            break
+        for l in lines:
+            k, sep, v = l.partition(":")
+            if sep and k.strip():
+                d[k.strip()] = v.strip()
+    return d
 
 
 def split_vals(v):

@@ -56,6 +56,8 @@
   font-family: var(--wb-body); font-size: 22px; line-height: 1.55; color: var(--wb-ink);
 }
 .wb-details-source[hidden] { display: none !important; }
+/* the hidden details line is the text block's first child; don't let the next element's top margin stack */
+.wvncp-bio-on .wb-details-source[hidden] + * { margin-top: 0 !important; }
 
 /* figures from Photo links */
 .wb-fig { margin: 48px auto; max-width: 880px; padding: 0 12px 12px 0; }
@@ -71,6 +73,8 @@
 .wb-fig--band .wb-cap { text-align: center; padding: 10px 20px; margin-right: 0; }
 .wb-fig--band .wb-fig-frame::before { top: 12px; }
 .wb-fig--inset { float: right; width: 260px; max-width: 45%; margin: 6px 0 24px 36px; }
+/* two portraits in a row stack down the right side instead of squeezing the text */
+.wb-fig--inset + .wb-fig--inset { clear: right; }
 .wb-fig--inset .wb-cap { font-size: 16px; text-align: center; padding: 8px 12px; }
 .wvncp-bio-on [data-sqsp-text-block-content]::after { content: ""; display: table; clear: both; }
 

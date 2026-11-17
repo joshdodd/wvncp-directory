@@ -115,7 +115,8 @@
 .wd-c-name a:hover, .wd-c-name a:focus { text-decoration: underline; }
 .wd-empty { padding: 40px 0; font-size: 19px; }
 .wd-empty p { margin: 0 0 12px; }
-.wd-scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, .45); z-index: 9998; }
+.wd-scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, .45); z-index: 2147483000; }
+.wd-portal { position: relative; z-index: 2147483001; }
 
 /* tablet: dropdown filters, stacked list */
 @media (max-width: 1023px) {
@@ -172,7 +173,7 @@
   .wd-input { height: 52px; font-size: 18px; }
   .wd-panel { display: none; }
   .wd-drawer-open .wd-panel {
-    display: flex; flex-direction: column; position: fixed; z-index: 9999; inset: 0 0 0 auto; width: min(390px, 100vw);
+    display: flex; flex-direction: column; position: fixed; z-index: 2147483001; inset: 0 0 0 auto; width: min(390px, 100vw);
     background: var(--wd-white); margin: 0; box-shadow: -8px 0 24px rgba(0, 0, 0, .2);
   }
   .wd-drawer-open .wd-panel-head { display: flex; align-items: center; margin: 0; padding: 12px 16px; border-bottom: 1px solid var(--wd-border); }

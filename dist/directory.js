@@ -392,8 +392,16 @@
       self.groupEls[g.key].toggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
   };
+  // The drawer is moved to <body> while open: Squarespace blocks create stacking contexts that would
+  // otherwise keep a position:fixed panel under the site header.
   Directory.prototype.openDrawer = function () {
     this._lastFocus = document.activeElement;
+    if (!this.portal) this.portal = el("div", { class: "wd wd-portal wd-drawer-open" });
+    this._panelHome = this.panel.parentNode;
+    this._panelNext = this.panel.nextSibling;
+    this.portal.appendChild(this.scrim);
+    this.portal.appendChild(this.panel);
+    document.body.appendChild(this.portal);
     this.root.classList.add("wd-drawer-open");
     this.scrim.hidden = false;
     this.filtersBtn.setAttribute("aria-expanded", "true");
@@ -407,6 +415,9 @@
     if (!this.root.classList.contains("wd-drawer-open")) return;
     this.root.classList.remove("wd-drawer-open");
     this.scrim.hidden = true;
+    if (this._panelHome) this._panelHome.insertBefore(this.panel, this._panelNext);
+    this.root.appendChild(this.scrim);
+    if (this.portal && this.portal.parentNode) this.portal.parentNode.removeChild(this.portal);
     this.filtersBtn.setAttribute("aria-expanded", "false");
     this.panel.setAttribute("role", "group");
     this.panel.removeAttribute("aria-modal");

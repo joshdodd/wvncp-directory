@@ -89,6 +89,8 @@
 .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-layout] :has(> [data-sqsp-image-classic-block-image-container]) {
   box-shadow: 12px 12px 0 var(--wb-green);
 }
+/* caption turned on but left empty: no empty green bar */
+.wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-caption-container]:has(> .image-caption:empty) { display: none !important; }
 .wvncp-bio-on [data-sqsp-section="blog-item"] [data-sqsp-image-classic-block-caption-container] {
   position: relative; z-index: 2; background: var(--wb-green); color: #fff; padding: 14px 20px; margin-top: 0;
 }

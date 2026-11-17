@@ -166,7 +166,9 @@
 @media (max-width: 640px) {
   .wd-searchbar { padding: 16px; }
   .wd-mobile-controls { width: 100%; }
-  .wd-filters-btn { display: inline-flex; flex: 1; }
+  .wd-filters-btn { display: inline-flex; flex: 1 1 0; min-width: 0; }
+  .wd-select { flex: 1 1 0; min-width: 0; }
+  .wd-sort-select { width: 100%; }
   .wd-input { height: 52px; font-size: 18px; }
   .wd-panel { display: none; }
   .wd-drawer-open .wd-panel {

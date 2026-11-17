@@ -198,7 +198,7 @@
     // search + mobile controls
     this.input = el("input", { type: "search", id: id + "-q", class: "wd-input", autocomplete: "off",
       placeholder: "Search by name, hometown, unit or ship…", value: this.state.q });
-    if (window.matchMedia && window.matchMedia("(max-width: 640px)").matches) this.input.placeholder = "Search name, place, unit or ship";
+    if (window.matchMedia && window.matchMedia("(max-width: 640px)").matches) this.input.placeholder = "Search names, places, units";
     this.input.addEventListener("input", function () {
       self.state.q = self.input.value;
       self.loadWords();

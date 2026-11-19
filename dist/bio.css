@@ -120,6 +120,8 @@
 
 /* related + PDF */
 .wb-bottom { max-width: 680px; margin: 48px auto 24px; }
+.wb-citations { margin: 0 0 28px !important; padding-top: 24px; border-top: 2px solid #000; font-family: var(--wb-body); font-size: 19px; line-height: 1.45; }
+.wb-citations a { color: var(--wb-blue) !important; text-decoration: underline; }
 .wb-related { background: var(--wb-cream); padding: 24px 28px; }
 .wb-label { margin: 0 0 12px !important; font-family: var(--wb-meta); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #000; }
 .wb-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none !important; margin: 0 0 16px !important; padding: 0 !important; }

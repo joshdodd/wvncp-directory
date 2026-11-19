@@ -18,6 +18,8 @@
   };
   var DETAIL_KEYS = ["Years", "Branch", "Conflict", "Cemetery", "Rank", "Written by", "School", "Instructed by",
     "Section", "Site", "Grave", "Interment date", "PDF"];
+  // one shared page of source citations for every bio (client decision, Nov 19)
+  var CITATIONS_URL = "https://docs.google.com/document/d/e/2PACX-1vRma6DHcAKQF5XgK6tH6VBYOIVw-zjC13_x7YekzMhLe1Ou0RHJSbK7CQcDkccV54Z0Xa2z-fknfRAG/pub";
   var PHOTO_RE = /^\s*Photo(\s*\(beside text\))?\s*$/i;
 
   function el(tag, attrs, kids) {
@@ -247,7 +249,10 @@
       content.parentNode.insertBefore(top, content);
       content.parentNode.insertBefore(lead, content);
     }
-    var bottom = el("div", { class: "wb-bottom" }, [related.children.length ? related : null, backLink("wb-back--bottom")]);
+    var citations = el("p", { class: "wb-citations" }, [
+      el("a", { href: CITATIONS_URL, target: "_blank", rel: "noopener", text: "All biography source citations can be found here." })
+    ]);
+    var bottom = el("div", { class: "wb-bottom" }, [citations, related.children.length ? related : null, backLink("wb-back--bottom")]);
     content.parentNode.insertBefore(bottom, content.nextSibling);
     document.documentElement.classList.add("wvncp-bio-on");
   }

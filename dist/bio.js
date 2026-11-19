@@ -203,6 +203,11 @@
           p.parentNode.replaceChild(photoFigure(p, a, figIndex++), p);
         }
       });
+      // a side photo with no text after it (the next thing is another photo) has nothing to wrap: center it on its own
+      Array.prototype.forEach.call(tb.querySelectorAll("figure.wb-fig--inset"), function (f) {
+        var n = f.nextElementSibling;
+        if (!n || (n.tagName === "FIGURE" && n.classList.contains("wb-fig") && !n.classList.contains("wb-fig--inset"))) f.classList.add("wb-fig--solo");
+      });
       // two photos in a row with the same caption (e.g. "left ... right") -> one side-by-side pair
       Array.prototype.forEach.call(tb.querySelectorAll("figure.wb-fig"), function (f) {
         var g = f.nextElementSibling;

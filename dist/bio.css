@@ -75,6 +75,11 @@
 .wb-fig--inset { float: right; width: 260px; max-width: 45%; margin: 6px 0 24px 36px; }
 /* two portraits in a row stack down the right side instead of squeezing the text */
 .wb-fig--inset + .wb-fig--inset { clear: right; }
+/* full-width photos never start beside a floated side photo (the image would drop below it and leave its frame and caption behind) */
+.wb-fig--lead, .wb-fig--band, .wb-fig--pair { clear: both; }
+.wvncp-bio-on [data-sqsp-section="blog-item"] .sqs-block-image:not(.float) { clear: both; }
+/* side photo with no text to wrap: centered on its own */
+.wb-fig--inset.wb-fig--solo { float: none; clear: both; width: 320px; max-width: 100%; margin: 48px auto; }
 .wb-fig--inset .wb-cap { font-size: 16px; text-align: center; padding: 8px 12px; }
 /* two photos sharing one caption sit side by side with the caption under both */
 .wb-fig--pair { max-width: 680px; clear: both; }

@@ -29,14 +29,12 @@ Interment date: January 1, 1999
 PDF: Download the PDF
 
 Start the biography here. Replace this paragraph.
-
-Sources
-Last, First. "Title of Source." Publisher, Year. Accessed Month Day, Year. URL.
 ```
 
 After pasting:
 
-- Make `Sources` a **Heading 3** and the source entries a **bulleted list** (one bullet per source).
+- Don't add a Sources section. Every bio page links to the shared source citations document automatically
+  (decision Nov 19); send new citations to whoever maintains that document.
 - Link the words `Download the PDF` to the uploaded PDF (Link → File). Delete the PDF line if there is no PDF.
 
 ## Rules for each line
